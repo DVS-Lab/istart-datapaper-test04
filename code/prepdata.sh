@@ -41,11 +41,6 @@ singularity run --cleanenv \
 -f /out/code/heuristics.py \
 -c dcm2niix -b --minmeta -o /out/bids --overwrite
 
-# run Jeff's code to fix field map, but first correct permissions
-chmod -R uga+rw $dsroot/bids/sub-$sub
-python $codedir/addIntendedFor.py
-
-
 
 # PART 2: Defacing anatomicals and date shifting to ensure compatibility with data sharing.
 
@@ -53,8 +48,4 @@ python $codedir/addIntendedFor.py
 bidsroot=$dsroot/bids
 pydeface ${bidsroot}/sub-${sub}/anat/sub-${sub}_T1w.nii.gz
 mv -f ${bidsroot}/sub-${sub}/anat/sub-${sub}_T1w_defaced.nii.gz ${bidsroot}/sub-${sub}/anat/sub-${sub}_T1w.nii.gz
-
-# shift dates on scans to reduce likelihood of re-identification
-#python $codedir/shiftdates.py $dsroot/bids/sub-${sub}/sub-${sub}_scans.tsv
-
 
